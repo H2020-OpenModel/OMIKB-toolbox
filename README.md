@@ -12,6 +12,13 @@ Install the package directly from GitHub:
 pip install git+https://github.com/H2020-OpenModel/OMIKB-toolbox.git
 ```
 
+to upgrade do: 
+
+```sh
+pip install --upgrade git+https://github.com/H2020-OpenModel/OMIKB-toolbox.git
+```
+
+
 # Usage: 
 
 See the jupyter Notebook demo in doc folder 
