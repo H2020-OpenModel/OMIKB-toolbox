@@ -60,16 +60,16 @@ class kb_toolbox:
         response = requests.get(self.query_iri+f"?query={query}", headers=self.omi_headers, timeout=50)
         return (response)
     
-    @property
     def ping(self):
         try:
             response = requests.get(self.ping_iri, headers=self.omi_headers, timeout=50)
             if response.status_code == 200:
-                return ("The OpenModel Knowledge Base is Alive!")
+                return "The OpenModel Knowledge Base is Alive!"
             else:
-                return ("The OpenModel Knowledge Base is Alive!")
-            except requests.RequestException as e:
-                return f"server down: {e}"
+                return f"Unexpected status code: {response.status_code}"
+        except requests.RequestException as e:
+            return f"server down: {e}"
+        
     # check if the server is online
     @property
     def is_online(self):
@@ -79,8 +79,8 @@ class kb_toolbox:
                 return True
             else:
                 return False
-            except requests.RequestException as e:
-                return f"Server down, exception obtained: {e}"
+        except requests.RequestException as e:
+            return f"Server down, exception obtained: {e}"
 
     def stats(self):
         response = requests.get(self.stats_iri, headers=self.omi_headers, timeout=50)
