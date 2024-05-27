@@ -60,6 +60,7 @@ class kb_toolbox:
         response = requests.get(self.query_iri+f"?query={query}", headers=self.omi_headers, timeout=50)
         return (response)
     
+    @property
     def ping(self):
         response = requests.get(self.ping_iri, headers=self.omi_headers, timeout=50)
         return (response.text)
