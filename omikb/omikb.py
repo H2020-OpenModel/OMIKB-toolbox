@@ -30,16 +30,16 @@ class kb_toolbox:
             user_data = response.json()
             auth_state = user_data.get('auth_state', {})
             access_token = auth_state.get('access_token',{})
-            print("access token obtained, (showing last 10 digits)", access_token[-10:])
+            print("Hello Usr: Yout access token is obtained: (Showing last 10 digits only)", access_token[-10:])
         else:
-            print(f"Error fetching user data: {response.status_code}")
+            print(f"Error fetching user data: {response.status_code} - Sorry, you are not able to use OMI - Contact Admin")
         self.access_token=access_token=user_data['auth_state']['access_token']
         self.userinfo=user_data['auth_state']['oauth_user']
         self.omi_headers= {
                               'accept': 'application/json',
                               'Authorization': f'Bearer {access_token}'
         }
-        print("Initialised Knowledge Base and OMI access from the jupyter interface for user:")
+        print("Initialised Knowledge Base and OMI access from the jupyter interface for the user:")
         print(print(json.dumps(self.userinfo, indent=2)))
         
         
