@@ -45,7 +45,9 @@ class kb_toolbox:
         
         
     def query(self, query):
-        response = requests.get(self.query_iri+f"?query={query}", headers=self.omi_headers, timeout=50)
+        # note proper encoding, seems like response does not encode. 
+        params = {'query': query}
+        response = requests.get(self.query_iri, params=params, headers=self.omi_headers, timeout=50)
         return (response)
     
     def search_keyword(self, keyword):
