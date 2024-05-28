@@ -134,9 +134,10 @@ class kb_toolbox:
         if not source:
             raise ValueError("Error - You must specify either a URL of an ontology or a file path as source!.")
         g=Graph()
-        g.parse(source)
+        g.parse(source, format="turtle")
         ttl_data=g.serialize(format='turtle').encode('utf-8')
         #graph_url = f"{fuseki_url}/data?graph={graph_name}"
+        
         response = requests.post(self.data_iri, data=ttl_data, headers=self.data_headers)
         if response.status_code in [200, 201, 204]:
             graph_name="default"
