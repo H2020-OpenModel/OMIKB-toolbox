@@ -24,7 +24,7 @@ class kb_toolbox:
         
         
         self.hub_iri = "https://hub.openmodel.app"
-        self.hub_token= "df0937d5a5a641bc83e61f2fa040798d"
+        self.hub_token= " 422ad0c0e52e45faab27204dd2464f39"
         self.username= os.getenv('JUPYTERHUB_USER')
         self.hub_api_header= {
                                  'Authorization': f'token {self.hub_token}',
@@ -34,7 +34,7 @@ class kb_toolbox:
             user_data = response.json()
             auth_state = user_data.get('auth_state', {})
             access_token = auth_state.get('access_token',{})
-            print("Hello Usr: Yout access token is obtained: (Showing last 10 digits only)", access_token[-10:])
+            print("Hello {self.username}: Your access token is obtained: (Showing last 10 digits only)", access_token[-10:])
         else:
             print(f"Error fetching user data: {response.status_code} - \
                       Sorry, you are not able to use OMI - Contact Admin")
