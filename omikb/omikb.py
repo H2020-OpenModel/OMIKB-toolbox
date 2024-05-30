@@ -16,15 +16,15 @@ class kb_toolbox:
             raise ValueError("Missing Configuration for knowledge base, please read the documentation")
             # should add a link to it, 
         """
-        self.query_iri = "https://openmodel.app/fuseki/dataset/sparql"
-        self.update_iri= "https://openmodel.app/fuseki3/dataset/update"
-        self.data_iri = "https://openmodel.app/fuseki3/dataset/data"
-        self.ping_iri = "https://openmodel.app/fuseki/$/ping"
-        self.stats_iri = "https://openmodel.app/fuseki/$/stats"
+        self.query_iri = "https://dev.openmodel.app/fuseki/dataset/sparql"
+        self.update_iri= "https://dev.openmodel.app/fuseki3/dataset/update"
+        self.data_iri = "https://dev.openmodel.app/fuseki3/dataset/data"
+        self.ping_iri = "https://dev.openmodel.app/fuseki/$/ping"
+        self.stats_iri = "https://dev.openmodel.app/fuseki/$/stats"
         
         
-        self.hub_iri = "https://hub.openmodel.app"
-        self.hub_token= "df0937d5a5a641bc83e61f2fa040798d"
+        self.hub_iri = "https://hub_dev.openmodel.app"
+        self.hub_token= " 422ad0c0e52e45faab27204dd2464f39"
         self.username= os.getenv('JUPYTERHUB_USER')
         self.hub_api_header= {
                                  'Authorization': f'token {self.hub_token}',
