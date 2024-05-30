@@ -34,7 +34,7 @@ class kb_toolbox:
             user_data = response.json()
             auth_state = user_data.get('auth_state', {})
             access_token = auth_state.get('access_token',{})
-            print("Hello Usr: Yout access token is obtained: (Showing last 10 digits only)", access_token[-10:])
+            print("Hello {self.username}: Your access token is obtained: (Showing last 10 digits only)", access_token[-10:])
         else:
             print(f"Error fetching user data: {response.status_code} - \
                       Sorry, you are not able to use OMI - Contact Admin")
