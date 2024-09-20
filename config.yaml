@@ -1,0 +1,29 @@
+domain: "ddmd.io"
+key_file: ".omi_token.yml"  # store the token from keycloak, not the above token.
+
+jupyter:
+  token:  "fa90e8fe2d074fc693687116b2d7e10d"   # the Jupyterhub API key
+  hub:    "https://hub.ddmd.io"
+
+
+services:
+  fuseki:
+    name: "General Fuseki"
+    end_point:
+      sparql: "https://omi.ddmd.io/fuseki/dataset/sparql"
+      query:    "https://omi.ddmd.io/fuseki/dataset/sparql"
+      update:   "https://omi.ddmd.io/fuseki3/dataset/update"
+      data:     "https://omi.ddmd.io/fuseki3/dataset/data"
+      ping:     "https://omi.ddmd.io/fuseki/$/ping"
+      stats:    "https://omi.ddmd.io/fuseki/$/stats"
+
+
+  kb:
+    name: "a knowledge base, fuseki"
+    end_point:
+      sparql: "https://omi.ddmd.io/fuseki/dataset/sparql"
+      query:    "https://omi.ddmd.io/fuseki/dataset/sparql"
+      update:   "https://omi.ddmd.io/fuseki3/dataset/update"
+      data:     "https://omi.ddmd.io/fuseki3/dataset/data"
+      ping:     "https://omi.ddmd.io/fuseki/$/ping"
+      stats:    "https://omi.ddmd.io/fuseki/$/stats"
