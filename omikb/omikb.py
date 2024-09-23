@@ -6,7 +6,9 @@ import json
 from urllib.parse import urlparse, urljoin
 from pathlib import Path
 from typing import Union
+"""
 
+"""
 
 class kb_toolbox:
     def __init__(self):
@@ -112,8 +114,8 @@ class kb_toolbox:
         return (response.json())
 
     def update(self, query):
-
-        response = requests.post(self.update_iri, data=query, headers=self.update_headers)
+        print(f"{self.update_iri}")
+        response = requests.get(self.update_iri, data=query, headers=self.update_headers)
         if response.status_code == 200:
             print("SPARQL update executed successfully.")
         else:
