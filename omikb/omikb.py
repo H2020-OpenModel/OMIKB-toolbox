@@ -38,8 +38,8 @@ class kb_toolbox:
             user_data = response.json()
             auth_state = user_data.get('auth_state', {})
             access_token = auth_state.get('access_token', {})
-            print(f"Hello {self.username}: Your access token is obtained: (Showing last 10 digits only)",
-                  access_token[-10:])
+            print(f"Hello {self.username}: Your access token is obtained: (Showing last 10 digits only) "
+                  f"{access_token[-10:]}")
         else:
             print(f"Error connecting to Jupyter Hub/fetching user data Failed with: {response.status_code} - \
                       \nSorry, you are not able to use OMI - Contact Admin")
