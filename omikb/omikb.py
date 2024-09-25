@@ -67,8 +67,13 @@ class kb_toolbox:
     def query(self, query):
         # note proper encoding, seems like response does not encode. 
         params = {'query': query}
-        response = requests.get(self.query_iri, params=params, headers=self.omi_get_headers, timeout=50)
+        response = requests.post(self.query_iri, params=params, headers=self.omi_get_headers, timeout=50)
         return (response)
+
+    def pquery(self, query):
+        # query with a post
+        params = {'query': query}
+        response = requests.post (self.pquery_iri, params=params, headers=self.omi_get_headers, timeout=50)
 
     def search_keyword(self, keyword):
         query = f"""
@@ -153,3 +158,4 @@ class kb_toolbox:
                        " ".join([f"-H '{key}: {value}'" for key, value in self.omi_get_headers.items()])
 
         print(curl_command)
+
