@@ -73,7 +73,7 @@ class kb_toolbox:
     def pquery(self, query):
         # query with a post
         params = {'query': query}
-        response = requests.post (self.pquery_iri, params=params, headers=self.omi_get_headers, timeout=50)
+        response = requests.post(self.pquery_iri, params=params, headers=self.omi_get_headers, timeout=50)
 
     def search_keyword(self, keyword):
         query = f"""
