@@ -67,8 +67,8 @@ class kb_toolbox:
     def query(self, query):
         # note proper encoding, seems like response does not encode. 
         params = {'query': query}
-        response = requests.post(self.query_iri, params=params, headers=self.omi_get_headers, timeout=50)
-        return (response)
+        response = requests.get(self.query_iri, params=params, headers=self.omi_get_headers, timeout=50)
+        return response
 
     def pquery(self, query):
         # query with a post
