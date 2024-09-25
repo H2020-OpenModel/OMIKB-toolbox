@@ -17,6 +17,8 @@ class kb_toolbox:
             config = yaml.safe_load(file)
 
         self.query_iri = config["services"]["fuseki"]["end_point"]["query"]
+        self.query_iri = config["services"]["fuseki"]["end_point"]["pquery"] #todo remove
+
         self.update_iri = config["services"]["fuseki"]["end_point"]["update"]
         self.data_iri = config["services"]["fuseki"]["end_point"]["data"]
         self.ping_iri = config["services"]["fuseki"]["end_point"]["ping"]
