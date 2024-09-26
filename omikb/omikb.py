@@ -61,9 +61,13 @@ class kb_toolbox:
             'Accept': "application/json",
             'Authorization': f'Bearer {access_token}'
         }
-        self.data_headers = self.omi_get_headers
-        self.data_headers['Content-Type'] = 'text/turtle'
-
+        # self.data_headers = self.omi_get_headers
+        # self.data_headers['Content-Type'] = 'text/turtle'
+        self.data_headers = {
+            'Accept': "application/json",
+            'Content-Type': 'text/turtle',
+            'Authorization': f'Bearer {access_token}'
+        }
         self.update_headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/sparql-update',

@@ -111,3 +111,16 @@ s = kb.update(update_query)
 s = kb.query(sparql_query)
 
 print(json.dumps(json.loads(s.content), indent=2))
+
+
+""" import an ontology """
+kb.import_ontology("http://www.w3.org/People/Berners-Lee/card")
+
+""" look for any triplet having Literal object as 'Tim Berners-Lee'"""
+sparql_query = "SELECT * WHERE { ?s ?p 'Tim Berners-Lee' } LIMIT 100"
+s = kb.query(sparql_query)
+print(json.dumps(json.loads(s.content), indent=2))
+
+""" search as keyword"""
+s=kb.search_keyword("Berners-Lee")
+print(json.dumps(json.loads(s.content), indent=2))
