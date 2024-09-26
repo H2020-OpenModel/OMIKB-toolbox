@@ -10,6 +10,16 @@ from typing import Union
 
 """
 
+
+def triples_count():
+
+    # query to count all triples
+    query = """
+    SELECT (COUNT(*) as ?triplesCount)
+    WHERE { ?s ?p ?o }
+    """
+
+
 class kb_toolbox:
     def __init__(self):
 
@@ -17,7 +27,7 @@ class kb_toolbox:
             config = yaml.safe_load(file)
 
         self.query_iri = config["services"]["fuseki"]["end_point"]["query"]
-        self.query_iri = config["services"]["fuseki"]["end_point"]["pquery"] #todo remove
+        self.pquery_iri = config["services"]["fuseki"]["end_point"]["pquery"] #todo remove
 
         self.update_iri = config["services"]["fuseki"]["end_point"]["update"]
         self.data_iri = config["services"]["fuseki"]["end_point"]["data"]
@@ -36,21 +46,22 @@ class kb_toolbox:
         }
 
         response = requests.get(f"{self.hub_iri}/hub/api/users/{self.username}", headers=self.hub_api_header)
-        if response.status_code == 200:
-            user_data = response.json()
-            auth_state = user_data.get('auth_state', {})
-            access_token = auth_state.get('access_token', {})
-            print(f"Hello {self.username}: Your access token is obtained: (Showing last 10 digits only) "
-                  f"{access_token[-10:]}")
-        else:
-            print(f"Error connecting to Jupyter Hub/fetching user data Failed with: {response.status_code} - \
+        if response.status_code != 200:
+            raise ConnectionError(f"Error connecting to Jupyter Hub/fetching user data Failed with: {response.status_code} - \
                       \nSorry, you are not able to use OMI - Contact Admin")
+
+        
+        user_data = response.json()
+        auth_state = user_data.get('auth_state', {})
+        access_token = auth_state.get('access_token', {})
+        print(f"Hello {self.username}: Your access token is obtained: (Showing last 10 digits only) "
+                f"{access_token[-10:]}")
         self.access_token = access_token = user_data['auth_state']['access_token']
         self.userinfo = user_data['auth_state']['oauth_user']
         self.omi_get_headers = {
-            'accept': "application/json, text/turtle",
-            'Authorization': f'Bearer {access_token}'
-        }
+        'accept': "application/json, text/turtle",
+        'Authorization': f'Bearer {access_token}'
+    }
         create_headers = lambda access_token: {
             "Content-Type": 'text/turtle',
             "Authorization": f"Bearer {access_token}"
@@ -127,14 +138,6 @@ class kb_toolbox:
             print("SPARQL update executed successfully.")
         else:
             print(f"Error: {response.status_code} - {response.text}")
-
-    def triples_count(self):
-
-        # query to count all triples
-        query = """
-        SELECT (COUNT(*) as ?triplesCount)
-        WHERE { ?s ?p ?o }
-        """
 
     def import_ontology(self, source: Union[str, Path]) -> requests.Response:
         # should add graph name (default user;s named graph) 

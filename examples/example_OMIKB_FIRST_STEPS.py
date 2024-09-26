@@ -11,7 +11,7 @@ from typing import Union
 #from ontoflow.engine import OntoFlowEngine
 #from tripper import Triplestore
 import os, yaml
-
+import pprint
 
 # # Using the OMIKBK Tool Box
 # - Manages in the back stage all internal setup needed to access protected services
@@ -84,11 +84,10 @@ s=kb.query(sparql_query)
 # In[20]:
 
 
-s.content
-
-
-# In[ ]:
-
+pprint.pprint(s.content, indent=2, width=80)
 
 print(kb.access_token)
+
+print(f"kb.query_iri {kb.query_iri}")
+print(f"kb.pquery_iri {kb.pquery_iri}")
 
