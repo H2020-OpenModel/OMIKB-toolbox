@@ -1,31 +1,18 @@
+# example omikb.yml setup file.
 domain: "ddmd.io"
-key_file: ".omi_token.yml"  # store the token from keycloak, not the above token.
- 
 
 jupyter:
-  token:  "b1437dab98214960bfcad4062cff7a6e"   # the Jupyterhub API key
+  token:  "5c1170a9460448129ac3d79164b34d0b"   # the Jupyterhub API key
   hub:    "https://hub.ddmd.io"
   username: adham
-
  
 services:
-  fuseki:
-    name: "General Fuseki"
-    end_point:
-      sparql: "https://omi.ddmd.io/fuseki/dataset/sparql"
-      query:    "https://omi.ddmd.io/fuseki/dataset/sparql" 
-      update:   "https://omi.ddmd.io/fuseki3/dataset/update"
-      data:     "https://omi.ddmd.io/fuseki3/dataset/data"
-      ping:     "https://omi.ddmd.io/fuseki/$/ping"
-      stats:    "https://omi.ddmd.io/fuseki/$/stats"
-
-
   kb:
-    name: "a knowledge base, fuseki"
+    name: "the knowledge base"
     end_point:
-      sparql: "https://omi.ddmd.io/fuseki/dataset/sparql"
-      query:    "https://omi.ddmd.io/fuseki/dataset/sparql" 
-      update:   "https://omi.ddmd.io/fuseki3/dataset/update"
-      data:     "https://omi.ddmd.io/fuseki3/dataset/data"
-      ping:     "https://omi.ddmd.io/fuseki/$/ping"
-      stats:    "https://omi.ddmd.io/fuseki/$/stats"
+      sparql:   "https://omi.ddmd.io/kb/dataset/sparql"
+      query:    "https://omi.ddmd.io/kb/dataset/sparql" 
+      update:   "https://omi.ddmd.io/kb/dataset/update"
+      data:     "https://omi.ddmd.io/kb/dataset/data"
+      ping:     "https://omi.ddmd.io/kb/$/ping"
+      stats:    "https://omi.ddmd.io/kb/$/stats"
