@@ -6,13 +6,13 @@ import json
 from urllib.parse import urlparse, urljoin
 from pathlib import Path
 from typing import Union
+
 """
 
 """
 
 
 def triples_count():
-
     # query to count all triples
     query = """
     SELECT (COUNT(*) as ?triplesCount)
@@ -25,14 +25,12 @@ class kb_toolbox:
 
         with open(os.path.expanduser('~/omikb.yml'), 'r') as file:
             config = yaml.safe_load(file)
-
-        self.query_iri = config["services"]["fuseki"]["end_point"]["query"]
-        self.pquery_iri = config["services"]["fuseki"]["end_point"]["pquery"] #todo remove
-
-        self.update_iri = config["services"]["fuseki"]["end_point"]["update"]
-        self.data_iri = config["services"]["fuseki"]["end_point"]["data"]
-        self.ping_iri = config["services"]["fuseki"]["end_point"]["ping"]
-        self.stats_iri = config["services"]["fuseki"]["end_point"]["stats"]
+        service = "kb"
+        self.query_iri = config["services"][service]["end_point"]["query"]
+        self.update_iri = config["services"][service]["end_point"]["update"]
+        self.data_iri = config["services"][service]["end_point"]["data"]
+        self.ping_iri = config["services"][service]["end_point"]["ping"]
+        self.stats_iri = config["services"][service]["end_point"]["stats"]
 
         self.hub_iri = config["jupyter"]["hub"]
         self.hub_token = config["jupyter"]["token"]
@@ -47,32 +45,32 @@ class kb_toolbox:
 
         response = requests.get(f"{self.hub_iri}/hub/api/users/{self.username}", headers=self.hub_api_header)
         if response.status_code != 200:
-            raise ConnectionError(f"Error connecting to Jupyter Hub/fetching user data Failed with: {response.status_code} - \
+            raise ConnectionError(
+                f"Error connecting to Jupyter Hub/fetching user data Failed with: {response.status_code} - \
                       \nSorry, you are not able to use OMI - Contact Admin")
 
-        
         user_data = response.json()
         auth_state = user_data.get('auth_state', {})
         access_token = auth_state.get('access_token', {})
         print(f"Hello {self.username}: Your access token is obtained: (Showing last 10 digits only) "
-                f"{access_token[-10:]}")
+              f"{access_token[-10:]}")
         self.access_token = access_token = user_data['auth_state']['access_token']
         self.userinfo = user_data['auth_state']['oauth_user']
-        self.omi_get_headers = {
-        'accept': "application/json, text/turtle",
-        'Authorization': f'Bearer {access_token}'
-    }
-        create_headers = lambda access_token: {
-            "Content-Type": 'text/turtle',
-            "Authorization": f"Bearer {access_token}"
-        }
-        self.data_headers = create_headers(self.access_token)
 
-        create_headers = lambda access_token: {
-            "Content-Type": "application/sparql-update",
-            "Authorization": f"Bearer {access_token}"
+        self.omi_get_headers = {
+            'Accept': "application/json",
+            'Authorization': f'Bearer {access_token}'
         }
-        self.update_headers = create_headers(self.access_token)
+        self.data_headers = self.omi_get_headers
+        self.data_headers['Content-Type'] = 'text/turtle'
+
+        self.update_headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/sparql-update',
+            'Authorization': f"Bearer {access_token}"
+        }
+        self.ping_headers = self.omi_get_headers
+        self.ping_headers["Content-Type"] = "application/x-www-form-urlencoded"
 
         print("Initialised Knowledge Base and OMI access from the jupyter interface for the user:")
         print(print(json.dumps(self.userinfo, indent=2)))
@@ -80,13 +78,8 @@ class kb_toolbox:
     def query(self, query):
         # note proper encoding, seems like response does not encode. 
         params = {'query': query}
-        response = requests.get(self.query_iri, params=params, headers=self.omi_get_headers, timeout=50)
+        response = requests.post(self.query_iri, params=params, headers=self.omi_get_headers, timeout=50)
         return response
-
-    def pquery(self, query):
-        # query with a post
-        params = {'query': query}
-        response = requests.post(self.pquery_iri, params=params, headers=self.omi_get_headers, timeout=50)
 
     def search_keyword(self, keyword):
         query = f"""
@@ -98,13 +91,15 @@ class kb_toolbox:
                           regex(str(?o), "{keyword}", "i"))
                 }}
                 """
-        params = {'query': query}
-        response = requests.get(self.query_iri, params=params, headers=self.omi_get_headers, timeout=50)
-        return (response)
+        # params = {'query': query}
+        # response = requests.post(self.query_iri, params=params, headers=self.omi_get_headers, timeout=50)
+        response = self.query(query)
+        return response
 
     def ping(self):
         try:
-            response = requests.get(self.ping_iri, headers=self.omi_get_headers, timeout=50)
+
+            response = requests.post(self.ping_iri, headers=self.ping_headers, timeout=50)
             if response.status_code == 200:
                 return "The OpenModel Knowledge Base is Alive!"
             else:
@@ -116,7 +111,8 @@ class kb_toolbox:
     @property
     def is_online(self):
         try:
-            response = requests.get(self.ping_iri, headers=self.omi_get_headers, timeout=50)
+
+            response = requests.post(self.ping_iri, headers=self.ping_headers, timeout=50)
             if response.status_code == 200:
                 return True
             else:
@@ -125,19 +121,15 @@ class kb_toolbox:
             return f"Server down, exception obtained: {e}"
 
     def stats(self):
-        response = requests.get(self.stats_iri, headers=self.omi_get_headers, timeout=50)
-        # return(json.dumps(json.loads(response.text), indent=2))
-
-        # return (json.dumps(response.text, indent=2))
-        return (response.json())
+        response = requests.post(self.stats_iri, headers=self.ping_headers, timeout=50)
+        return response.json()
 
     def update(self, query):
-        print(f"{self.update_iri}")
-        response = requests.get(self.update_iri, data=query, headers=self.update_headers)
+        response = requests.post(self.update_iri, data=query, headers=self.update_headers)
         if response.status_code == 200:
             print("SPARQL update executed successfully.")
         else:
-            print(f"Error: {response.status_code} - {response.text}")
+            print(f"--Error: {response.status_code} - {response.text}")
 
     def import_ontology(self, source: Union[str, Path]) -> requests.Response:
         # should add graph name (default user;s named graph) 
@@ -163,4 +155,3 @@ class kb_toolbox:
                        " ".join([f"-H '{key}: {value}'" for key, value in self.omi_get_headers.items()])
 
         print(curl_command)
-
