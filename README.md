@@ -1,23 +1,24 @@
 # OMIKB-toolbox: The OpenModel Knowledge-Base Tool-Box
 
-A python class with methods to make working with OMIKB easy. 
+A python class with methods to make working with OMIKB as easy as possible. 
 
 ## Features: 
-- provide an easy way to connect either from within the OMI hub (on the remote jupyter session on hub.openmode.app) or from your own workstation (windows or linux or mac.. ) to any service running on omi.openmodel.app in a secure manner 
-- provide simple ways to check the status of services (e.g. to ping a fuseki server)
-- provide simple methods for users to access the API without worrying about authenitcation headers/low level request libraries etc. 
-- Providers an example for OMI service providers and developers a template to build a new or extend omiKB for other services.
-- to log in and use API, the user has to only login to the online hub, and establish a session, which will normally last for 60 minutes, but the user can extend it by relogin. 
-- omiKB fetches a temporary key for using the remote servcies, provided the user has generated and stored their own API Key from the hub. See documentation later. 
+- allows to acces the knowledge base (KB) and other API services from within the user's own network, e.g. local desktop and the remote omi services 
+-  allows to acces the knowledge base (KB) and other API services from within the omi jupyter hub network  
+- provide simple ways to check the status of services (for now supports only fuseki servers)
+- Authenticate users seamlesly with the omi hub 
 
 ## How does it work
 
+Once the user installes omikb, they need to configure an omikb.yml file and save it in their home folder. This will be read by omikb. 
+
+the user has to store the omi hub API key obtianed as described in the omi infrastructure project [see omi docs on git hub for example](https://github.com/H2020-OpenModel/infrastructure/tree/main/docs).
+
+once instantiated, omikb uses the API key to obtain an access key to the omi. This access key has a limited life span of 1 hour (can be extended if needed, please contact developers.)
+
+## Example
+
 Here is a simple example, the same works on omi hub (https://hub.openmodel.app) or on your own machine running python. 
-
-We assume you already installed all requirements (see next chapter) and have a proper python environment. 
-
-We also assume the user has set up and configured a key and created an omikb.yml config file (which should be in the home folder of the user in either the remote hub, or the workstation/client they are using).
-
 
 - Open a session to the OMI default service which is now an Apache Jena Fuseki Sparql end point supporting the standard Sparql [w3C RDF query language](https://www.w3.org/TR/rdf-sparql-query/).
 
@@ -29,10 +30,11 @@ kb=kb_toolbox()
 ...
 
 ```
-this creates an instance, which contains all the information you need to acccess the service, provides of course you have logged in. 
+this creates an instance, which contains all the information you need to access the service, provides of course you have logged in. 
 
+Now we can use things like kb.query("some sparql query"), or kb.update("some INSERT statement"), etc to seamlessly interact with the knowledge base
 
-
+see [first steps example here](./examples/example_OMIKB_FIRST_STEPS.py)
 
 # Installation 
 
@@ -49,7 +51,14 @@ pip install --upgrade git+https://github.com/H2020-OpenModel/OMIKB-toolbox.git
 ```
 
 
-# Usage: 
+# Developers guide and what next 
+currently, version 0.1 supports only one service, which is an apache jena fuseki end point, however, one can build support for other services by following the steps: 
+
+1. copy the existing kb_toolbox class
+2. modify the methods according to the service end points as defined in omi 
+3. add a services section to omikb.yml 
+
+for example, one can create remote access to OntoFlow or other services in a similar manner. 
 
 See the jupyter Notebook demo in doc folder 
 
