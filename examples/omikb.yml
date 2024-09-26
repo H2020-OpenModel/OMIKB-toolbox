@@ -1,0 +1,18 @@
+# example omikb.yml setup file.
+domain: "ddmd.io"
+
+jupyter:
+  token:  "5c1170a9460448129ac3d79164b34d0b"   # the Jupyterhub API key
+  hub:    "https://hub.ddmd.io"
+  username: adham
+ 
+services:
+  kb:
+    name: "the knowledge base"
+    end_point:
+      sparql:   "https://omi.ddmd.io/kb/dataset/sparql"
+      query:    "https://omi.ddmd.io/kb/dataset/sparql" 
+      update:   "https://omi.ddmd.io/kb/dataset/update"
+      data:     "https://omi.ddmd.io/kb/dataset/data"
+      ping:     "https://omi.ddmd.io/kb/$/ping"
+      stats:    "https://omi.ddmd.io/kb/$/stats"
