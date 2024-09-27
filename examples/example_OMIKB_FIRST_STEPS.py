@@ -18,7 +18,7 @@ kb = kb_toolbox()
 
 """
 test if the connection is alive, this will print a log message """
-print(kb.ping())
+print("kb.ping", kb.ping())
 
 """ a more machine freindly test, return true or false"""
 print(kb.is_online)
@@ -26,10 +26,19 @@ print(kb.is_online)
 """ get the stats, assuming it is a fuseki end point, otherwise not defined """
 print(kb.stats())
 
+
+update_query = """
+DELETE WHERE {?s ?p ?o .}
+
+"""
+s = kb.update(update_query)
+
+
+
 """ lets send a sparql query to the query end point """
-sparql_query = "SELECT * WHERE { ?s ?p ?o } LIMIT 100"
+sparql_query = "SELECT * WHERE { ?s ?p ?o } LIMIT 10"
 s = kb.query(sparql_query)
-print(s.content)
+print(json.dumps(json.loads(s.content), indent=2))
 
 """ lets send an update query """
 update_query = """
@@ -124,3 +133,10 @@ print(json.dumps(json.loads(s.content), indent=2))
 """ search as keyword"""
 s=kb.search_keyword("Berners-Lee")
 print(json.dumps(json.loads(s.content), indent=2))
+
+
+update_query = """
+DELETE WHERE {?s ?p ?o .}
+
+"""
+s = kb.update(update_query)
