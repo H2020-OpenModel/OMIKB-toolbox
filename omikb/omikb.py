@@ -159,3 +159,4 @@ class kb_toolbox:
                        " ".join([f"-H '{key}: {value}'" for key, value in self.omi_get_headers.items()])
 
         print(curl_command)
+
