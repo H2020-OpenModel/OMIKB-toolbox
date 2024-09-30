@@ -1,18 +1,29 @@
-# example omikb.yml setup file.
-domain: "ddmd.io"
+domain: "openmodel.app"
 
 jupyter:
-  token:  "5c1170a9460448129ac3d79164b34d0b"   # the Jupyterhub API key
-  hub:    "https://hub.ddmd.io"
+  token:  "ADD JUPYTER HUB KEY"  # the Jupyterhub API key
+  hub:    "https://hub.openmodel.app"
   username: adham
  
 services:
+#  kb:
+#    name: "the knowledge base"
+#    end_point:
+#      sparql:   "https://omi.ddmd.io/kb/dataset/sparql"
+#      query:    "https://omi.ddmd.io/kb/dataset/sparql"
+#      update:   "https://omi.ddmd.io/kb/dataset/update"
+#      data:     "https://omi.ddmd.io/kb/dataset/data"
+#      ping:     "https://omi.ddmd.io/kb/$/ping"
+#      stats:    "https://omi.ddmd.io/kb/$/stats"
+
+
+
   kb:
     name: "the knowledge base"
     end_point:
-      sparql:   "https://omi.ddmd.io/kb/dataset/sparql"
-      query:    "https://omi.ddmd.io/kb/dataset/sparql" 
-      update:   "https://omi.ddmd.io/kb/dataset/update"
-      data:     "https://omi.ddmd.io/kb/dataset/data"
-      ping:     "https://omi.ddmd.io/kb/$/ping"
-      stats:    "https://omi.ddmd.io/kb/$/stats"
+      sparql:   "https://openmodel.app/kb/dataset/sparql"
+      query:    "https://openmodel.app/kb/dataset/sparql"
+      update:   "https://openmodel.app/kb/dataset/update"
+      data:     "https://openmodel.app/kb/dataset/data"
+      ping:     "https://openmodel.app/kb/$/ping"
+      stats:    "https://openmodel.app/kb/$/stats"
