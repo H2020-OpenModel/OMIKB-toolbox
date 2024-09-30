@@ -140,3 +140,6 @@ DELETE WHERE {?s ?p ?o .}
 
 """
 s = kb.update(update_query)
+
+
+print(f" The server is {kb.query_iri}")
