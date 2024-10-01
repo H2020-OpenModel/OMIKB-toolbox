@@ -3,7 +3,7 @@ domain: "openmodel.app"
 jupyter:
   token:  "ADD JUPYTER HUB KEY"  # the Jupyterhub API key
   hub:    "https://hub.openmodel.app"
-  username: adham
+  username: "ADD YOUR USERNAME" # Username on the infrastructure 
  
 services:
 #  kb:
