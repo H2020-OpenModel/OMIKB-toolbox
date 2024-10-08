@@ -2,8 +2,9 @@ from setuptools import setup, find_packages
 
 setup(
     name="omikb",
-    version="0.0.1",
-    packages=find_packages(),
+    version="0.0.2",
+    packages=find_packages(where='./'),
+    package_dir={'': './'},
     install_requires=[
         'requests', 'rdflib'
     ],

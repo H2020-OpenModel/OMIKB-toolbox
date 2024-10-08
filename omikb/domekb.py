@@ -8,6 +8,10 @@ from pathlib import Path
 from typing import Union
 
 """
+The Dome 4.0 Knowledge Base Interface, built based on omikb.py by removing the bearer key as we are 
+directly connecting to the DOME4.0 fuseki image behind the semantic discovery and changed the default service. 
+
+this shares the same k services files, still named omikb.py, though this may change in teh future. 
 
 """
 
@@ -20,7 +24,7 @@ def triples_count():
     """
 
 
-class kb_toolbox:  #fixme change to KbToolBox
+class KbToolBox:
     def __init__(self, service=None):
         """
         if service is none, the default one is used, other wise the specified one of exists
@@ -28,7 +32,7 @@ class kb_toolbox:  #fixme change to KbToolBox
         :param service:
         """
 
-        service = service or "kb"
+        service = service or "dome_kb"
 
         with open(os.path.expanduser('~/omikb.yml'), 'r') as file:
             config = yaml.safe_load(file)
@@ -39,52 +43,19 @@ class kb_toolbox:  #fixme change to KbToolBox
         self.ping_iri = config["services"][service]["end_point"]["ping"]
         self.stats_iri = config["services"][service]["end_point"]["stats"]
 
-        self.hub_iri = config["jupyter"]["hub"]
-        self.hub_token = config["jupyter"]["token"]
-
-        print(f"token= {self.hub_token}")
-
-        self.username = config["jupyter"]["username"]
-        print(f"hub user name is {self.username}")
-        self.hub_api_header = {
-            'Authorization': f'token {self.hub_token}',
-        }
-
-        response = requests.get(f"{self.hub_iri}/hub/api/users/{self.username}", headers=self.hub_api_header)
-        if response.status_code != 200:
-            raise ConnectionError(
-                f"Error connecting to Jupyter Hub/fetching user data Failed with: {response.status_code} - \
-                      \nSorry, you are not able to use OMI - Contact Admin")
-
-        user_data = response.json()
-        auth_state = user_data.get('auth_state', {})
-        access_token = auth_state.get('access_token', {})
-        print(f"Hello {self.username}: Your access token is obtained: (Showing last 10 digits only) "
-              f"{access_token[-10:]}")
-        self.access_token = access_token = user_data['auth_state']['access_token']
-        self.userinfo = user_data['auth_state']['oauth_user']
-
         self.omi_get_headers = {
-            'Accept': "application/json",
-            'Authorization': f'Bearer {access_token}'
+            'Accept': "application/json"
         }
-        # self.data_headers = self.omi_get_headers
-        # self.data_headers['Content-Type'] = 'text/turtle'
         self.data_headers = {
             'Accept': "application/json",
-            'Content-Type': 'text/turtle',
-            'Authorization': f'Bearer {access_token}'
+            'Content-Type': 'text/turtle'
         }
         self.update_headers = {
             'Accept': 'application/json',
-            'Content-Type': 'application/sparql-update',
-            'Authorization': f"Bearer {access_token}"
+            'Content-Type': 'application/sparql-update'
         }
         self.ping_headers = self.omi_get_headers
         self.ping_headers["Content-Type"] = "application/x-www-form-urlencoded"
-
-        print("Initialised Knowledge Base and OMI access from the jupyter interface for the user:")
-        print(print(json.dumps(self.userinfo, indent=2)))
 
     def query(self, query):
         # note proper encoding, seems like response does not encode. 
@@ -102,8 +73,6 @@ class kb_toolbox:  #fixme change to KbToolBox
                           regex(str(?o), "{keyword}", "i"))
                 }}
                 """
-        # params = {'query': query}
-        # response = requests.post(self.query_iri, params=params, headers=self.omi_get_headers, timeout=50)
         response = self.query(query)
         return response
 
@@ -112,7 +81,7 @@ class kb_toolbox:  #fixme change to KbToolBox
 
             response = requests.post(self.ping_iri, headers=self.ping_headers, timeout=50)
             if response.status_code == 200:
-                return "The OpenModel Knowledge Base is Alive!"
+                return "The DOME 4.0 (internal) Knowledge Base is Alive!"
             else:
                 return f"Unexpected status code: {response.status_code}"
         except requests.RequestException as e:
@@ -150,7 +119,6 @@ class kb_toolbox:  #fixme change to KbToolBox
         g = Graph()
         g.parse(source, format="turtle")
         ttl_data = g.serialize(format='turtle').encode('utf-8')
-        # graph_url = f"{fuseki_url}/data?graph={graph_name}"
 
         response = requests.post(self.data_iri, data=ttl_data, headers=self.data_headers)
         if response.status_code in [200, 201, 204]:

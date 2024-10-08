@@ -27,3 +27,15 @@ services:
       data:     "https://openmodel.app/kb/dataset/data"
       ping:     "https://openmodel.app/kb/$/ping"
       stats:    "https://openmodel.app/kb/$/stats"
+
+
+  dome_kb:
+    name: "the Dome 4.0 knowledge base"
+    end_point:
+      sparql:   "http://fuseki:3030/dataset/sparql"
+      query:    "http://fuseki:3030/dataset/sparql"
+      update:   "http://fuseki:3030/dataset/update"
+      data:     "http://fuseki:3030/dataset/data"
+      ping:     "http://fuseki:3030/$/ping"
+      stats:    "http://fuseki:3030/$/stats"
+
